@@ -53,7 +53,7 @@ router.route("/create").post((req, res, next) => {
 
 router.get("/find/:userId/:quizzId", (req, res, next) => {
   console.log(req.params);
-  QuizResponse.findOne({
+  QuizResponse.find({
     quiz_id: req.params.quizzId,
     user_id: req.params.userId,
   })
