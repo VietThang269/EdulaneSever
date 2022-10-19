@@ -88,6 +88,24 @@ router.route("/:id").delete((req, res, next) => {
     .catch(next);
 });
 
+router.put("/update_password/:id", (req, res, next) => {
+  // User.findById(req.params.id)
+  //   .then((user) => res.status(200).send(user))
+  //   .catch(next);
+  User.findById(req.params.id)
+    .then(async (user_details) => {
+      if (req.body.password) {
+        const hashedPassword = await argon2.hash(req.body.password);
+        user_details.password = hashedPassword;
+      }
+      user_details
+        .save()
+        .then((updatedUser) => res.status(200).send(updatedUser))
+        .catch(next);
+    })
+    .catch(next);
+});
+
 router.route("/update/:id").patch((req, res, next) => {
   console.log("update profile > ", req.body);
   User.findById(req.params.id)

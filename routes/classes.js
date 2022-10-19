@@ -135,20 +135,20 @@ router.route("/:id").delete((req, res, next) => {
 });
 
 // not implemented in frontend
-router.route("/update/:id").patch((req, res, next) => {
+router.route("/update/:id").put((req, res, next) => {
   Class.findById(req.params.id)
     .then((class_details) => {
       if (req.body.className) class_details.className = req.body.className;
 
       if (req.body.section) class_details.section = req.body.section;
 
-      if (req.body.subject) class_details.subject = req.body.subject;
+      // if (req.body.subject) class_details.subject = req.body.subject;
 
-      if (req.body.room) class_details.room = req.body.room;
+      // if (req.body.room) class_details.room = req.body.room;
 
-      if (req.body.joinCode) class_details.joinCode = req.body.joinCode;
+      // if (req.body.joinCode) class_details.joinCode = req.body.joinCode;
 
-      if (req.body.user) class_details.user = req.body.user;
+      // if (req.body.user) class_details.user = req.body.user;
 
       class_details
         .save()
