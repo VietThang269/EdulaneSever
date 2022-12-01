@@ -83,20 +83,10 @@ router.get("/find/:userId/:resId", (req, res, next) => {
     .catch(next);
 });
 
-// router.route('/:id').get((req, res, next) => {
-//     Quiz.findById(req.params.id)
-//         .then(quiz_details => res.status(200).send(quiz_details))
-//         .catch(next);
-// });
-
 router.route("/update/:id").put((req, res, next) => {
-  console.log(req.body);
   AssignmentResponse.findById(req.params.id)
     .then((assignment_response_details) => {
       if (req.body.marks) assignment_response_details.marks = req.body.marks;
-      assignment_response_details.rawText = req.body.rawText;
-      assignment_response_details.assignmentFileUrl =
-        req.body.assignmentFileUrl;
       assignment_response_details
         .save()
         .then((updatedAssignmentResponse) =>
@@ -108,7 +98,6 @@ router.route("/update/:id").put((req, res, next) => {
 });
 
 router.route("/update").put((req, res, next) => {
-  console.log(req.body);
   AssignmentResponse.findOne({
     userId: req.body.user_id,
     assignment_id: req.body.assignment_id,
@@ -117,7 +106,7 @@ router.route("/update").put((req, res, next) => {
       if (req.body.marks) assignment_response_details.marks = req.body.marks;
       if (req.body.rawText)
         assignment_response_details.rawText = req.body.rawText;
-      if (req.body.assignmentFileUrl)
+      if (req.body.assignmentFileUrl.length !== 0)
         assignment_response_details.assignmentFileUrl =
           req.body.assignmentFileUrl;
       assignment_response_details
