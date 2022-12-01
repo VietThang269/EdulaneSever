@@ -4,26 +4,6 @@ const verifyToken = require("../middleware/auth");
 const Class = require("../models/class.model");
 const ClassContent = require("../models/class_content.model");
 
-// router.route("/").get((req, res, next) => {
-//   let query_param = req.query;
-//   if (!_.isEmpty(query_param)) {
-//     if (query_param.class_id) {
-//       let classId = query_param.class_id;
-//       ClassContent.find({ classId })
-//         .then((class_contents) => res.status(200).send(class_contents))
-//         .catch(next);
-//     } else {
-//       ClassContent.find()
-//         .then((class_contents) => res.status(200).send(class_contents))
-//         .catch(next);
-//     }
-//   } else {
-//     ClassContent.find()
-//       .then((class_contents) => res.status(200).send(class_contents))
-//       .catch(next);
-//   }
-// });
-
 router.get("/:id", (req, res, next) => {
   const classId = req.params.id;
   ClassContent.find({ classId })
@@ -56,6 +36,21 @@ router.route("/:id").get((req, res, next) => {
   ClassContent.findById(req.params.id)
     .then((class_content) => res.status(200).send(class_content))
     .catch(next);
+});
+
+router.put("/update", (req, res, next) => {
+  console.log(req.body);
+  const { rawText, classId, id, attachedFileUrls } = req.body;
+  ClassContent.findById(id).then((content) => {
+    content.rawText = rawText;
+    if (attachedFileUrls.length !== 0)
+      content.attachedFileUrls = attachedFileUrls;
+
+    content
+      .save()
+      .then((updatedLesson) => res.status(200).send(updatedLesson))
+      .catch(next);
+  });
 });
 
 router.route("/:id").delete((req, res, next) => {

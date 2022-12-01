@@ -60,6 +60,37 @@ router.route("/:id").get((req, res, next) => {
     .catch(next);
 });
 
+router.put("/update", (req, res, next) => {
+  console.log(req.body);
+  const {
+    id,
+    title,
+    instruction,
+    assignmentMarks,
+    assignmentFileUrl,
+    startingDate,
+    dueDate,
+  } = req.body;
+  Assignment.findById(id).then((content) => {
+    content.title = title;
+    content.instruction = instruction;
+    content.assignmentMarks = assignmentMarks;
+    if (startingDate) {
+      content.startingDate = startingDate;
+    }
+    if (dueDate) {
+      content.dueDate = dueDate;
+    }
+    if (assignmentFileUrl.length !== 0)
+      content.assignmentFileUrl = assignmentFileUrl;
+
+    content
+      .save()
+      .then((updatedAssigment) => res.status(200).send(updatedAssigment))
+      .catch(next);
+  });
+});
+
 // router.route('/update/:id').patch((req, res, next) => {
 //     Assignment.findById(req.params.id)
 //         .then(assignment_details => {
